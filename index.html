@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kit biblio.deco</title>
+<meta name="description" content="Bibliothèque de motifs SVG thématiques à préparer pour la découpe Cricut — biblio.gironde">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="barre">
+  <div class="marque">
+    <svg class="marque-icone" viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="23" r="5"/><circle cx="23" cy="23" r="5"/><path d="M12.5 19.5 25 4M19.5 19.5 7 4"/></svg>
+    <div>
+      <h1>biblio.deco</h1>
+      <p class="marque-sous">kit Cricut · biblio.gironde</p>
+    </div>
+  </div>
+  <div class="reglages">
+    <label class="champ">
+      <span>Machine</span>
+      <select id="reglage-machine"></select>
+    </label>
+    <label class="champ">
+      <span>Matière</span>
+      <select id="reglage-matiere"></select>
+    </label>
+    <button type="button" class="bouton bouton-discret" id="btn-aide">Mode d'emploi</button>
+  </div>
+</header>
+
+<div class="mise-en-page">
+  <nav class="themes" aria-label="Thèmes">
+    <p class="etiquette">Thèmes</p>
+    <ul id="liste-themes"></ul>
+    <button type="button" class="bouton bouton-pointille" id="btn-importer">Importer un SVG…</button>
+    <input type="file" id="fichier-import" accept=".svg,image/svg+xml" multiple hidden>
+  </nav>
+
+  <main class="catalogue">
+    <div class="catalogue-outils">
+      <label class="recherche">
+        <span class="visuellement-cache">Rechercher un motif</span>
+        <input type="search" id="recherche" placeholder="Rechercher : sapin, lapin, manette…" autocomplete="off">
+      </label>
+      <p class="compteur" id="compteur" aria-live="polite"></p>
+    </div>
+    <div class="grille" id="grille"></div>
+    <div class="vide" id="vide" hidden></div>
+  </main>
+
+  <aside class="atelier" id="atelier" aria-label="Préparation de la découpe">
+    <section class="carte" id="preparation" aria-labelledby="prep-titre"></section>
+    <section class="carte" id="planche" aria-labelledby="planche-titre"></section>
+  </aside>
+</div>
+
+<dialog id="aide" aria-labelledby="aide-titre">
+  <form method="dialog" class="aide-contenu">
+    <div class="aide-entete">
+      <h2 id="aide-titre">Mode d'emploi</h2>
+      <button class="bouton bouton-discret" value="fermer" aria-label="Fermer">Fermer</button>
+    </div>
+
+    <ol class="etapes">
+      <li><strong>Réglez la machine et la matière</strong> en haut de page. La zone de découpe, le tapis conseillé et l'effet miroir en dépendent.</li>
+      <li><strong>Choisissez un motif</strong>, réglez sa largeur en centimètres et le nombre d'exemplaires, puis <em>Ajouter à la planche</em>.</li>
+      <li><strong>Téléchargez la planche</strong> : un seul fichier SVG, aux dimensions réelles, avec tous les motifs.</li>
+      <li><strong>Dans Cricut Design Space</strong> : Nouveau projet → <em>Importer</em> → <em>Parcourir</em> → choisissez le fichier → <em>Importer</em> → <em>Ajouter au canevas</em>. Vérifiez la taille affichée, puis <em>Créer</em>.</li>
+      <li><strong>Sur l'écran des tapis</strong>, sélectionnez la matière, activez le miroir si la matière est du flex thermocollant, chargez le tapis et lancez la découpe.</li>
+    </ol>
+
+    <p class="note">Cricut ne permet pas à un site web d'envoyer directement un fichier à la machine : le passage par l'import dans Design Space est obligatoire. Chaque couleur du SVG devient un calque, donc un passage de matériau.</p>
+
+    <h3>Options d'export</h3>
+    <label class="champ champ-ligne">
+      <span>Unités du fichier</span>
+      <select id="reglage-unite">
+        <option value="mm">Millimètres (recommandé)</option>
+        <option value="in">Pouces</option>
+        <option value="px72">Pixels à 72 ppi (anciennes versions de Design Space)</option>
+      </select>
+    </label>
+    <p class="note">Si la taille importée ne correspond pas à celle prévue, essayez une autre unité.</p>
+
+    <h3>Ajouter des motifs à la bibliothèque</h3>
+    <p>Déposez les fichiers SVG dans <code>bibliotheque/&lt;thème&gt;/</code>, puis lancez <code>node outils/generer-catalogue.mjs</code>. Le nom affiché vient de la balise <code>&lt;title&gt;</code> du SVG, ou à défaut du nom de fichier. Le README détaille les options.</p>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="catalogue.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
